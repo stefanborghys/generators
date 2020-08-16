@@ -18,18 +18,9 @@ class CountDown extends React.Component {
     }
 
     countDown() {
-        const state = this.state;
-        const number = state.number;
-        if (number === 1) {
-            this.setState({
-                number: this.props.number
-            });
-        } else {
-            this.setState({
-                number: state.number - 1
-            });
-        }
-
+        this.setState((state, props) => ({
+            number: state.number === 1 ? props.number : state.number - 1
+        }));
     }
 
     render() {
