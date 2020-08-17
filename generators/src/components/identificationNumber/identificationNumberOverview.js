@@ -10,10 +10,10 @@ class IdentificationNumberOverview extends React.Component {
             generate: true,
             calculate: false
         };
-        this.toggle = this.toggle.bind(this);
+        this.handleToggle = this.handleToggle.bind(this);
     }
 
-    toggle() {
+    handleToggle() {
         this.setState(state => ({
             generate: !state.generate,
             calculate: !state.calculate
@@ -23,8 +23,8 @@ class IdentificationNumberOverview extends React.Component {
     render() {
         const generate = this.state.generate;
         return (<div>
-            <button onClick={this.toggle} disabled={generate}>Generate</button>
-            <button onClick={this.toggle} disabled={!generate}>Calculate</button>
+            <button onClick={this.handleToggle} disabled={generate}>Generate</button>
+            <button onClick={this.handleToggle} disabled={!generate}>Calculate</button>
             {generate ? <IdentificationNumberGenerator/> : <IdentificationNumberCalculator/>}
         </div>);
     }

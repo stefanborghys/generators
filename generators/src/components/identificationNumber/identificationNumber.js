@@ -6,31 +6,56 @@ class IdentificationNumber extends React.Component {
         super(props);
     }
 
-    firstGroup(dateOfBirth) {
-        const year = dateOfBirth.getFullYear();
-        const yearOfBirth = year.toString().slice(2);
-
-        const month = dateOfBirth.getMonth() + 1;
-        const monthOfBirth = month < 10 ? "0" + month : month;
-
-        const date = dateOfBirth.getDate();
-        const birthday = date < 10 ? "0" + date : date;
-
-        return yearOfBirth + "." + monthOfBirth + "." + birthday;
+    asDoubleDigit(number) {
+        return number < 10 ? this.leftPad(number, 1, '0') : number;
     }
 
-    secondGroup(serialNumber) {
+    /**
+     * Left pad a String with a specified String.
+     *
+     * @param string - the String to pad out
+     * @param size - the number of times the padString will be padded to the left of the String
+     * @param padString - the String to pad with
+     * @returns {*}
+     */
+    leftPad(string, size, padString) {
+        return padString.repeat(size) + string;
+    }
+
+    toDateOfBirthString(dateOfBirth) {
+        const year = dateOfBirth.getFullYear().toString().slice(2);
+        const month = this.asDoubleDigit(dateOfBirth.getMonth() + 1);
+        const day = this.asDoubleDigit(dateOfBirth.getDate());
+        return year + "." + month + "." + day;
+    }
+
+    toSerialNumberString(serialNumber) {
         if (serialNumber < 10) {
-            return "00" + serialNumber;
+            return this.leftPad(serialNumber, 2, '0');
         } else if (serialNumber < 100) {
-            return "0" + serialNumber;
+            return this.leftPad(serialNumber, 1, '0')
         } else {
             return serialNumber;
         }
     }
 
+    toIdentificationNumberString(dateOfBirth, serialNumber) {
+        const dateOfBirthString = this.toDateOfBirthString(dateOfBirth);
+        const serialNumberString = this.toSerialNumberString(serialNumber);
+
+        // Control number calculation requires the base number to be prefixed by '2', when the Date of Birth is after the year 2000
+        const controlBasePrefix = dateOfBirth > new Date("1999-12-31T23:59:59Z") ? "2" : "";
+        const controlBaseNumber = controlBasePrefix.concat(dateOfBirthString.replace(/\./g, "")).concat(serialNumberString);
+        const controlBaseDevision = controlBaseNumber % 97;
+        const controlNumber = 97 - controlBaseDevision;
+
+        const controlNumberString = this.asDoubleDigit(controlNumber);
+
+        return dateOfBirthString + "-" + serialNumberString + "." + controlNumberString;
+    }
+
     render() {
-        return (<label>{this.firstGroup(this.props.dateOfBirth)}-{this.secondGroup(this.props.serialNumber)}</label>);
+        return (<label>{this.toIdentificationNumberString(this.props.dateOfBirth, this.props.serialNumber)}</label>);
     }
 }
 
