@@ -1,26 +1,19 @@
 import React from "react";
-import IdentificationNumber from "./identificationNumber";
 
 class IdentificationNumberCalculator extends React.Component {
 
     constructor(props) {
         super(props);
+        const gender = this.getGenderBySerialNumber(props.serialNumber);
         this.state = {
-            dateOfBirth: this.dateToStringFormat(new Date()),
             maxDateOfBirth: this.dateToStringFormat(new Date()),
-            gender: 'MALE',
-            serialNumber: 1,
-            minSerialNumber: 1,
-            maxSerialNumber: 997
+            gender: gender,
+            minSerialNumber: this.getMinSerialNumber(gender),
+            maxSerialNumber: this.getMaxSerialNumber(gender)
         }
         this.handleDateOfBirth = this.handleDateOfBirth.bind(this);
         this.handleGender = this.handleGender.bind(this);
         this.handleSerialNumber = this.handleSerialNumber.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    now() {
-        return this.dateToString(Date.now());
     }
 
     dateToStringFormat(date) {
@@ -34,56 +27,85 @@ class IdentificationNumberCalculator extends React.Component {
     }
 
     handleDateOfBirth(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
+        this.props.onDateOfBirthChange(new Date(event.target.value));
+    }
+
+    isMale(gender) {
+        return gender === 'MALE';
+    }
+
+    isFemale(gender) {
+        return gender === 'FEMALE';
+    }
+
+    getGenderBySerialNumber(serialNumber) {
+        return serialNumber % 2 === 0 ? 'FEMALE' : 'MALE';
+    }
+
+    getMinSerialNumber(gender) {
+        return this.isMale(gender) ? 1 : 2;
+    }
+
+    getMaxSerialNumber(gender) {
+        return this.isMale(gender) ? 997 : 998;
     }
 
     handleGender(event) {
+        const gender = event.target.value;
+        const minSerialNumber = this.getMinSerialNumber(gender);
         this.setState({
-            [event.target.name]: event.target.value,
-            serialNumber: event.target.value === 'MALE' ? 1 : 2,
-            minSerialNumber: event.target.value === 'MALE' ? 1 : 2,
-            maxSerialNumber: event.target.value === 'MALE' ? 997 : 998
+            gender: gender,
+            minSerialNumber: minSerialNumber,
+            maxSerialNumber: this.getMaxSerialNumber(gender)
         });
+        this.props.onSerialNumberChange(minSerialNumber);
     }
 
     handleSerialNumber(event) {
-        this.setState({
-            [event.target.name]: event.target.value
-        });
-    }
-
-    handleSubmit(event) {
+        this.props.onSerialNumberChange(parseInt(event.target.value));
     }
 
     render() {
+        const dateOfBirth = this.dateToStringFormat(this.props.dateOfBirth);
+        const maxDateOfBirth = this.state.maxDateOfBirth;
+        const serialNumber = this.props.serialNumber;
+
+        const gender = this.getGenderBySerialNumber(this.props.serialNumber);
+        const minSerialNumber = this.getMinSerialNumber(gender);
+        const maxSerialNumber = this.getMaxSerialNumber(gender);
+
         return (<div>
             <form>
                 <fieldset>
                     <legend>Identification Number</legend>
                     <label htmlFor="dateOfBirth">Date of Birth:</label>
-                    <input type="date" name="dateOfBirth" id="dateOfBirth" value={this.state.dateOfBirth} max={this.state.maxDateOfBirth}
+                    <input type="date" name="dateOfBirth" id="dateOfBirth"
+                           value={dateOfBirth}
+                           max={maxDateOfBirth}
                            onChange={this.handleDateOfBirth} required/>
                     <br/>
                     <br/>
                     <label>Gender:</label>
-                    <input type="radio" name="gender" id="male" value="MALE" checked={this.state.gender === 'MALE'} onChange={this.handleGender}/>
+                    <input type="radio" name="gender" id="male"
+                           value="MALE"
+                           checked={this.isMale(gender)}
+                           onChange={this.handleGender}/>
                     <label htmlFor="male">male</label>
-                    <input type="radio" name="gender" id="female" value="FEMALE" checked={this.state.gender === 'FEMALE'}
+                    <input type="radio" name="gender" id="female"
+                           value="FEMALE"
+                           checked={this.isFemale(gender)}
                            onChange={this.handleGender}/>
                     <label htmlFor="female">female</label>
                     <br/>
                     <br/>
                     <label htmlFor="serialNumber">Serial number:</label>
-                    <input type="number" name="serialNumber" id="serialNumber" value={this.state.serialNumber} min={this.state.minSerialNumber}
-                           max={this.state.maxSerialNumber} step={2} size={3} onChange={this.handleSerialNumber} required/>
-                    <br/>
-                    <br/>
-                    <input type="submit" value="Calculate"/>
+                    <input type="number" name="serialNumber" id="serialNumber"
+                           value={serialNumber}
+                           min={minSerialNumber} max={maxSerialNumber}
+                           step={2} size={3}
+                           onChange={this.handleSerialNumber} required/>
                 </fieldset>
             </form>
-            <IdentificationNumber dateOfBirth={new Date(this.state.dateOfBirth)} serialNumber={this.state.serialNumber}/>
         </div>);
     }
 

@@ -1,31 +1,43 @@
 import React from "react";
 import IdentificationNumberGenerator from "./identificationNumberGenerator";
 import IdentificationNumberCalculator from "./identificationNumberCalculator";
+import IdentificationNumber from "./identificationNumber";
 
 class IdentificationNumberOverview extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            generate: true,
-            calculate: false
+            dateOfBirth: new Date(),
+            serialNumber: 1
         };
-        this.handleToggle = this.handleToggle.bind(this);
+        this.handleDateOfBirthChange = this.handleDateOfBirthChange.bind(this);
+        this.handleSerialNumberChange = this.handleSerialNumberChange.bind(this);
+        this.handleIdentificationNumberChange = this.handleIdentificationNumberChange.bind(this);
     }
 
-    handleToggle() {
-        this.setState(state => ({
-            generate: !state.generate,
-            calculate: !state.calculate
-        }));
+    handleDateOfBirthChange(dateOfBirth) {
+        this.setState({dateOfBirth: dateOfBirth});
+    }
+
+    handleSerialNumberChange(serialNumber) {
+        this.setState({serialNumber: serialNumber});
+    }
+
+    handleIdentificationNumberChange(generatedIdentificationNumber) {
+        this.setState(generatedIdentificationNumber);
     }
 
     render() {
-        const generate = this.state.generate;
+        const dateOfBirth = this.state.dateOfBirth;
+        const serialNumber = this.state.serialNumber;
         return (<div>
-            <button onClick={this.handleToggle} disabled={generate}>Generate</button>
-            <button onClick={this.handleToggle} disabled={!generate}>Calculate</button>
-            {generate ? <IdentificationNumberGenerator/> : <IdentificationNumberCalculator/>}
+            <IdentificationNumberGenerator onIdentificationNumberChange={this.handleIdentificationNumberChange}/>
+            <IdentificationNumberCalculator dateOfBirth={dateOfBirth}
+                                            onDateOfBirthChange={this.handleDateOfBirthChange}
+                                            serialNumber={serialNumber}
+                                            onSerialNumberChange={this.handleSerialNumberChange}/>
+            <IdentificationNumber dateOfBirth={dateOfBirth} serialNumber={serialNumber}/>
         </div>);
     }
 

@@ -24,7 +24,8 @@ class CountDown extends React.Component {
     }
 
     render() {
-        return (<span>{this.state.number}</span>);
+        const number = this.state.number;
+        return (<span>{number}</span>);
     }
 }
 

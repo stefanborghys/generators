@@ -39,7 +39,17 @@ class IdentificationNumber extends React.Component {
         }
     }
 
-    toIdentificationNumberString(dateOfBirth, serialNumber) {
+    toIdentificationNumberString(dateOfBirth = new Date(), serialNumber = 1) {
+        if (typeof dateOfBirth != 'object') {
+            return null;
+        }
+        if (typeof serialNumber != 'number') {
+            return null;
+        }
+        if (isNaN(serialNumber)) {
+            return null;
+        }
+
         const dateOfBirthString = this.toDateOfBirthString(dateOfBirth);
         const serialNumberString = this.toSerialNumberString(serialNumber);
 
@@ -55,7 +65,9 @@ class IdentificationNumber extends React.Component {
     }
 
     render() {
-        return (<label>{this.toIdentificationNumberString(this.props.dateOfBirth, this.props.serialNumber)}</label>);
+        const dateOfBirth = this.props.dateOfBirth;
+        const serialNumber = this.props.serialNumber;
+        return (<label>{this.toIdentificationNumberString(dateOfBirth, serialNumber)}</label>);
     }
 }
 
