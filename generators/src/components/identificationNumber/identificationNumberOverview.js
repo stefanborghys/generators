@@ -1,43 +1,32 @@
 import React from "react";
 import IdentificationNumberGenerator from "./identificationNumberGenerator";
 import IdentificationNumberCalculator from "./identificationNumberCalculator";
-import IdentificationNumber from "./identificationNumber";
+import IdentificationNumberLabel from "./identificationNumberLabel";
+import CopyToClipboard from "./copyToClipboard";
+import IdentifiationNumber from "./identifiationNumber";
 
 class IdentificationNumberOverview extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            dateOfBirth: new Date(),
-            serialNumber: 1
+            identificationNumber: new IdentifiationNumber(new Date(), 1)
         };
-        this.handleDateOfBirthChange = this.handleDateOfBirthChange.bind(this);
-        this.handleSerialNumberChange = this.handleSerialNumberChange.bind(this);
         this.handleIdentificationNumberChange = this.handleIdentificationNumberChange.bind(this);
     }
 
-    handleDateOfBirthChange(dateOfBirth) {
-        this.setState({dateOfBirth: dateOfBirth});
-    }
-
-    handleSerialNumberChange(serialNumber) {
-        this.setState({serialNumber: serialNumber});
-    }
-
-    handleIdentificationNumberChange(generatedIdentificationNumber) {
-        this.setState(generatedIdentificationNumber);
+    handleIdentificationNumberChange(identificationNumber) {
+        this.setState({identificationNumber: identificationNumber});
     }
 
     render() {
-        const dateOfBirth = this.state.dateOfBirth;
-        const serialNumber = this.state.serialNumber;
+        const identificationNumber = this.state.identificationNumber;
         return (<div>
-            <IdentificationNumberGenerator onIdentificationNumberChange={this.handleIdentificationNumberChange}/>
-            <IdentificationNumberCalculator dateOfBirth={dateOfBirth}
-                                            onDateOfBirthChange={this.handleDateOfBirthChange}
-                                            serialNumber={serialNumber}
-                                            onSerialNumberChange={this.handleSerialNumberChange}/>
-            <IdentificationNumber dateOfBirth={dateOfBirth} serialNumber={serialNumber}/>
+            <IdentificationNumberCalculator identificationNumber={identificationNumber}
+                                            onChange={this.handleIdentificationNumberChange}/>
+            <IdentificationNumberGenerator onChange={this.handleIdentificationNumberChange}/>
+            <IdentificationNumberLabel identificationNumber={identificationNumber}/>
+            <CopyToClipboard value={identificationNumber.toString()}/>
         </div>);
     }
 
