@@ -10,13 +10,13 @@ class IdentificationNumberOverview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            identificationNumber: new IdentifiationNumber(new Date(), 1)
+            identificationNumber: new IdentifiationNumber()
         };
         this.handleIdentificationNumberChange = this.handleIdentificationNumberChange.bind(this);
     }
 
     handleIdentificationNumberChange(identificationNumber) {
-        this.setState({identificationNumber: identificationNumber});
+        this.setState({identificationNumber});
     }
 
     render() {

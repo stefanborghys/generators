@@ -1,14 +1,21 @@
 import moment from 'moment';
+import {MALE, FEMALE} from "./gender";
 
 class IdentifiationNumber {
 
-    constructor(dateOfBirth, serialNumber) {
+    constructor(dateOfBirth = new Date(), serialNumber = 1) {
+        this._dateOfBirth = dateOfBirth;
         this._dateOfBirthMoment = moment(dateOfBirth);
         this._serialNumber = serialNumber;
     }
 
     get dateOfBirth() {
-        return new Date(this._dateOfBirthMoment.toArray());
+        return this._dateOfBirth;
+    }
+
+    set dateOfBirth(dateOfBirth) {
+        this._dateOfBirth = dateOfBirth;
+        this._dateOfBirthMoment = moment(dateOfBirth);
     }
 
     get dateOfBirthMoment() {
@@ -19,8 +26,12 @@ class IdentifiationNumber {
         return this._serialNumber;
     }
 
+    set serialNumber(serialNumber) {
+        this._serialNumber = serialNumber;
+    }
+
     get gender() {
-        return this._serialNumber % 2 === 0 ? 'FEMALE' : 'MALE';
+        return this._serialNumber % 2 === 0 ? FEMALE : MALE;
     }
 
     //
@@ -70,6 +81,10 @@ class IdentifiationNumber {
             return null;
         }
         return this._dateOfBirthMoment.format("YY.MM.DD") + "-" + this.serialNumberString() + "." + this.controlNumberString();
+    }
+
+    clone() {
+        return new IdentifiationNumber(this._dateOfBirth, this._serialNumber);
     }
 
 }

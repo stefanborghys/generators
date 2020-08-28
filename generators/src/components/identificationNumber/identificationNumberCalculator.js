@@ -1,20 +1,17 @@
 import React from "react";
-import IdentifiationNumber from "./identifiationNumber";
 import moment from 'moment';
+import {MALE, FEMALE, Gender} from "./gender";
+import SerialNumberConfiguration from "./serialNumberConfiguration";
 
 class IdentificationNumberCalculator extends React.Component {
 
     constructor(props) {
         super(props);
-        const identificationNumber = this.props.identificationNumber;
-        const gender = identificationNumber.gender;
+        const identificationNumber = this.props.identificationNumber.clone();
         this.state = {
             maxDateOfBirthMoment: moment(),
-            gender: gender,
-            minSerialNumber: this.getMinSerialNumber(gender),
-            maxSerialNumber: this.getMaxSerialNumber(gender),
-            dateOfBirth: identificationNumber.dateOfBirth,
-            serialNumber: identificationNumber.serialNumber
+            serialNumberConfiguration: SerialNumberConfiguration.ofGender(identificationNumber.gender),
+            identificationNumber: identificationNumber
         }
         this.handleDateOfBirth = this.handleDateOfBirth.bind(this);
         this.handleGender = this.handleGender.bind(this);
@@ -22,55 +19,42 @@ class IdentificationNumberCalculator extends React.Component {
     }
 
     handleDateOfBirth(event) {
-        this.setState({dateOfBirth: new Date(event.target.value)})
-        this.handleIdentificationNumberChange();
-    }
+        const identificationNumber = this.state.identificationNumber;
+        identificationNumber.dateOfBirth = new Date(event.target.value);
 
-    isMale(gender) {
-        return gender === 'MALE';
-    }
-
-    isFemale(gender) {
-        return gender === 'FEMALE';
-    }
-
-    getMinSerialNumber(gender) {
-        return this.isMale(gender) ? 1 : 2;
-    }
-
-    getMaxSerialNumber(gender) {
-        return this.isMale(gender) ? 997 : 998;
+        this.handleIdentificationNumberChange(identificationNumber);
     }
 
     handleGender(event) {
-        const gender = event.target.value;
-        const minSerialNumber = this.getMinSerialNumber(gender);
-        this.setState({
-            gender: gender,
-            minSerialNumber: minSerialNumber,
-            maxSerialNumber: this.getMaxSerialNumber(gender),
-            serialNumber: minSerialNumber
-        });
-        this.handleIdentificationNumberChange();
+        const serialNumberConfiguration = SerialNumberConfiguration.ofGender(event.target.value);
+
+        const identificationNumber = this.state.identificationNumber;
+        identificationNumber.serialNumber = serialNumberConfiguration.minimum;
+
+        this.setState({serialNumberConfiguration});
+        this.handleIdentificationNumberChange(identificationNumber);
     }
 
     handleSerialNumber(event) {
-        this.setState({serialNumber: parseInt(event.target.value)})
-        this.handleIdentificationNumberChange();
+        const identificationNumber = this.state.identificationNumber;
+        identificationNumber.serialNumber = parseInt(event.target.value);
+
+        this.handleIdentificationNumberChange(identificationNumber);
     }
 
-    handleIdentificationNumberChange() {
-        this.props.onChange(new IdentifiationNumber(this.state.dateOfBirth, this.state.serialNumber));
+    handleIdentificationNumberChange(identificationNumber) {
+        this.setState({identificationNumber});
+        this.props.onChange(identificationNumber);
     }
 
     render() {
-        const identifiationNumber = this.props.identificationNumber;
-        const dateOfBirth = identifiationNumber.dateOfBirthMoment.format("YYYY-MM-DD");
+        const identificationNumber = this.props.identificationNumber;
+
+        const dateOfBirth = identificationNumber.dateOfBirthMoment.format("YYYY-MM-DD");
         const maxDateOfBirth = this.state.maxDateOfBirthMoment.format("YYYY-MM-DD");
 
-        const gender = identifiationNumber.gender;
-        const minSerialNumber = this.getMinSerialNumber(gender);
-        const maxSerialNumber = this.getMaxSerialNumber(gender);
+        const gender = identificationNumber.gender;
+        const serialNumberConfiguration = this.state.serialNumberConfiguration;
 
         return (<form>
             <fieldset>
@@ -84,21 +68,21 @@ class IdentificationNumberCalculator extends React.Component {
                 <br/>
                 <label>Gender:</label>
                 <input type="radio" name="gender" id="male"
-                       value="MALE"
-                       checked={this.isMale(gender)}
+                       value={MALE}
+                       checked={Gender.isMale(gender)}
                        onChange={this.handleGender}/>
                 <label htmlFor="male">male</label>
                 <input type="radio" name="gender" id="female"
-                       value="FEMALE"
-                       checked={this.isFemale(gender)}
+                       value={FEMALE}
+                       checked={Gender.isFemale(gender)}
                        onChange={this.handleGender}/>
                 <label htmlFor="female">female</label>
                 <br/>
                 <br/>
                 <label htmlFor="serialNumber">Serial number:</label>
                 <input type="number" name="serialNumber" id="serialNumber"
-                       value={identifiationNumber.serialNumber}
-                       min={minSerialNumber} max={maxSerialNumber}
+                       value={identificationNumber.serialNumber}
+                       min={serialNumberConfiguration.minimum} max={serialNumberConfiguration.maximum}
                        step={2} size={3}
                        onChange={this.handleSerialNumber} required/>
             </fieldset>
