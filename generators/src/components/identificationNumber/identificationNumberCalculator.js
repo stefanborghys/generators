@@ -2,6 +2,7 @@ import React from "react";
 import moment from 'moment';
 import {MALE, FEMALE, Gender} from "./gender";
 import SerialNumberConfiguration from "./serialNumberConfiguration";
+import PropTypes from "prop-types";
 
 class IdentificationNumberCalculator extends React.Component {
 
@@ -43,7 +44,6 @@ class IdentificationNumberCalculator extends React.Component {
     }
 
     handleIdentificationNumberChange(identificationNumber) {
-        this.setState({identificationNumber});
         this.props.onChange(identificationNumber);
     }
 
@@ -89,6 +89,10 @@ class IdentificationNumberCalculator extends React.Component {
         </form>);
     }
 
+}
+
+IdentificationNumberCalculator.propTypes = {
+    identificationNumber: PropTypes.object.isRequired
 }
 
 export default IdentificationNumberCalculator;

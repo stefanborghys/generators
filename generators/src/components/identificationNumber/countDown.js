@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 class CountDown extends React.Component {
 
@@ -27,6 +28,10 @@ class CountDown extends React.Component {
         const number = this.state.number;
         return (<span>{number}</span>);
     }
+}
+
+CountDown.propTypes = {
+    number: PropTypes.number.isRequired
 }
 
 export default CountDown;

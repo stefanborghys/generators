@@ -72,9 +72,9 @@ class IdentifiationNumber {
         if (_.isNil(dateOfBirth)) {
             throw new Error("The date of birth cannot be 'null' or 'undefined.'");
         } else if (!_.isDate(dateOfBirth)) {
-            throw new Error("The date of birth should of type 'Date'.");
+            throw new Error("Date of birth '" + dateOfBirth + "' should of type 'Date'.");
         } else if (dateOfBirth > Date.now()) {
-            throw new Error("The date of birth cannot be in the future.");
+            throw new Error("Date of birth '" + dateOfBirth + "' cannot be in the future.");
         } else {
             return dateOfBirth;
         }
@@ -84,9 +84,9 @@ class IdentifiationNumber {
         if (_.isNil(serialNumber)) {
             throw new Error("The serial number cannot be 'null' or 'undefined.'");
         } else if (!_.isNumber(serialNumber)) {
-            throw new Error("The serial number should of type 'Number'.");
+            throw new Error("Serial number '" + serialNumber + "' should of type 'Number'.");
         } else if (!_.inRange(serialNumber, 1, 998)) {
-            throw new Error("The serial number should be between 1 and 998 (incl).");
+            throw new Error("Serial number '" + serialNumber + "' should be between 1 and 998 (incl).");
         } else {
             return serialNumber;
         }

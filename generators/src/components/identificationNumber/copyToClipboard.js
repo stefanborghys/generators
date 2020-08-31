@@ -1,5 +1,6 @@
 import React from "react";
 import copy from "copy-to-clipboard";
+import PropTypes from "prop-types";
 
 class CopyToClipboard extends React.Component {
 
@@ -16,6 +17,10 @@ class CopyToClipboard extends React.Component {
         return (<button onClick={this.handleCopy}>Copy to Clipboard</button>);
     }
 
+}
+
+CopyToClipboard.propTypes = {
+    value: PropTypes.string.isRequired
 }
 
 export default CopyToClipboard;
