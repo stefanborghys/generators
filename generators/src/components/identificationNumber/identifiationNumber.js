@@ -85,7 +85,7 @@ class IdentifiationNumber {
             throw new Error("The serial number cannot be 'null' or 'undefined.'");
         } else if (!_.isNumber(serialNumber)) {
             throw new Error("Serial number '" + serialNumber + "' should of type 'Number'.");
-        } else if (!_.inRange(serialNumber, 1, 998)) {
+        } else if (!_.inRange(serialNumber, 1, 999)) {
             throw new Error("Serial number '" + serialNumber + "' should be between 1 and 998 (incl).");
         } else {
             return serialNumber;
