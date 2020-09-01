@@ -70,7 +70,7 @@ class IdentifiationNumber {
 
     static validDateOfBirth(dateOfBirth) {
         if (_.isNil(dateOfBirth)) {
-            throw new Error("The date of birth cannot be 'null' or 'undefined.'");
+            throw new Error("The date of birth cannot be 'null' or 'undefined'.");
         } else if (!_.isDate(dateOfBirth)) {
             throw new Error("Date of birth '" + dateOfBirth + "' should of type 'Date'.");
         } else if (dateOfBirth > Date.now()) {
@@ -82,7 +82,7 @@ class IdentifiationNumber {
 
     static validSerialNumber(serialNumber) {
         if (_.isNil(serialNumber)) {
-            throw new Error("The serial number cannot be 'null' or 'undefined.'");
+            throw new Error("The serial number cannot be 'null' or 'undefined'.");
         } else if (!_.isNumber(serialNumber)) {
             throw new Error("Serial number '" + serialNumber + "' should of type 'Number'.");
         } else if (!_.inRange(serialNumber, 1, 999)) {

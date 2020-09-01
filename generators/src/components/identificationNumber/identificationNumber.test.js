@@ -57,13 +57,13 @@ describe('Validate serial number', () => {
     test('\'null\' throws error', () => {
         expect(() => {
             IdentifiationNumber.validSerialNumber(null)
-        }).toThrow('The serial number cannot be \'null\' or \'undefined.\'');
+        }).toThrow('The serial number cannot be \'null\' or \'undefined\'.');
     });
 
     test('\'undefined\' throws error', () => {
         expect(() => {
             IdentifiationNumber.validSerialNumber(undefined)
-        }).toThrow('The serial number cannot be \'null\' or \'undefined.\'');
+        }).toThrow('The serial number cannot be \'null\' or \'undefined\'.');
     });
 
     test('\'a\' (non number) throws error', () => {
@@ -91,13 +91,13 @@ describe('Validate date of birth', () => {
     test('\'null\' throws error', () => {
         expect(() => {
             IdentifiationNumber.validDateOfBirth(null)
-        }).toThrow('The date of birth cannot be \'null\' or \'undefined.\'');
+        }).toThrow('The date of birth cannot be \'null\' or \'undefined\'.');
     });
 
     test('\'undefined\' throws error', () => {
         expect(() => {
             IdentifiationNumber.validDateOfBirth(undefined)
-        }).toThrow('The date of birth cannot be \'null\' or \'undefined.\'');
+        }).toThrow('The date of birth cannot be \'null\' or \'undefined\'.');
     });
 
     test('\'a\' (non date) throws error', () => {

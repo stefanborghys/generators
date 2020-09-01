@@ -16,7 +16,7 @@ class SerialNumberConfiguration {
     }
 
     static ofGender(gender) {
-        return Gender.isMale(gender) ? MALE_CONFIGURATION : FEMALE_CONFIGURATION;
+        return Gender.isMale(Gender.validGender(gender)) ? MALE_CONFIGURATION : FEMALE_CONFIGURATION;
     }
 
 }
