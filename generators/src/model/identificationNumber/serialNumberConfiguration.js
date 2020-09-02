@@ -1,4 +1,4 @@
-import {Gender} from "./gender";
+import {Gender} from "../person/gender";
 
 class SerialNumberConfiguration {
 

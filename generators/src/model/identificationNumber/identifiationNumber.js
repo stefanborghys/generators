@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {MALE, FEMALE} from "./gender";
+import {MALE, FEMALE} from "../person/gender";
 import _ from 'lodash';
 
 /**

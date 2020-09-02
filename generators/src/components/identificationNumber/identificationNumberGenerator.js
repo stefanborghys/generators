@@ -1,5 +1,5 @@
 import React from "react";
-import IdentifiationNumber from "./identifiationNumber";
+import IdentifiationNumber from "../../model/identificationNumber/identifiationNumber";
 
 class IdentificationNumberGenerator extends React.Component {
 

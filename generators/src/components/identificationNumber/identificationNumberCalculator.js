@@ -1,7 +1,7 @@
 import React from "react";
 import moment from 'moment';
-import {MALE, FEMALE, Gender} from "./gender";
-import SerialNumberConfiguration from "./serialNumberConfiguration";
+import {FEMALE, Gender, MALE} from "../../model/person/gender";
+import SerialNumberConfiguration from "../../model/identificationNumber/serialNumberConfiguration";
 import PropTypes from "prop-types";
 
 class IdentificationNumberCalculator extends React.Component {

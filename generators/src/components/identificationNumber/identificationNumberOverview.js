@@ -2,8 +2,8 @@ import React from "react";
 import IdentificationNumberGenerator from "./identificationNumberGenerator";
 import IdentificationNumberCalculator from "./identificationNumberCalculator";
 import IdentificationNumberLabel from "./identificationNumberLabel";
-import CopyToClipboard from "./copyToClipboard";
-import IdentifiationNumber from "./identifiationNumber";
+import CopyToClipboard from "../clipboard/copyToClipboard";
+import IdentifiationNumber from "../../model/identificationNumber/identifiationNumber";
 
 class IdentificationNumberOverview extends React.Component {
 

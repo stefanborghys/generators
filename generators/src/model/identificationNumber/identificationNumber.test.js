@@ -1,10 +1,16 @@
 import IdentifiationNumber from "./identifiationNumber";
-import {MALE, FEMALE} from "./gender";
+import {MALE, FEMALE} from "../person/gender";
 import _ from 'lodash';
 import moment from 'moment';
 
 describe('Constructor', () => {
 
+    /**
+     * Tests an IdentificationNumber's default state.
+     * Since the default dateOfBirth is the date at it's moment of creation.
+     * We test the control number and identification number String representation by regex.
+     * In that way we don't have to provide calculations solely for the purpose of testing it's internal logic.
+     */
     test('With default values', () => {
         const identifiationNumber = new IdentifiationNumber();
         expect(identifiationNumber.serialNumber).toBe(1);
@@ -14,24 +20,47 @@ describe('Constructor', () => {
         expect(identifiationNumber.dateOfBirth.getDate()).toBe(now.getDate());
         expect(identifiationNumber.gender).toBe(MALE);
         expect(identifiationNumber.serialNumberString()).toBe("001");
-        expect(identifiationNumber.controlNumberString()).toBe("93");
-        expect(identifiationNumber.toString()).toBe((now.getYear() - 100) + "." + _.padStart(now.getMonth() + 1, 2, '0') + "." + _.padStart(now.getDate(), 2, '0') + "-001.93");
+        expect(identifiationNumber.controlNumberString()).toMatch(/\d{2}/);
+        expect(identifiationNumber.toString()).toMatch(/\d{2}\.\d{2}\.\d{2}-\d{3}.\d{2}/);
         expect(identifiationNumber).toStrictEqual(identifiationNumber.clone());
     });
 
-    test('With valid values', () => {
-        const adaLovelaceDateOfBirth = new Date(1815, 11, 10);
-        const identifiationNumber = new IdentifiationNumber(adaLovelaceDateOfBirth, 28);
-        expect(identifiationNumber.serialNumber).toBe(28);
-        expect(identifiationNumber.dateOfBirth.getFullYear()).toBe(adaLovelaceDateOfBirth.getFullYear());
-        expect(identifiationNumber.dateOfBirth.getMonth()).toBe(adaLovelaceDateOfBirth.getMonth());
-        expect(identifiationNumber.dateOfBirth.getDate()).toBe(adaLovelaceDateOfBirth.getDate());
-        expect(identifiationNumber.gender).toBe(FEMALE);
-        expect(identifiationNumber.serialNumberString()).toBe("028");
-        expect(identifiationNumber.controlNumberString()).toBe("71");
-        expect(identifiationNumber.toString()).toBe("15.12.10-028.71");
-        expect(identifiationNumber).toStrictEqual(identifiationNumber.clone());
+    test('With Ada Lovelace\'s date of birth \'10/12/1815\'', () => {
+        assertIdentificationNumber(new Date(1815, 11, 10), 28, FEMALE, "028", "71", "15.12.10-028.71");
     });
+
+    test('With valid values', () => {
+        assertIdentificationNumber(new Date(1987, 5, 26), 115, MALE, "115", "04", "87.06.26-115.04");
+    });
+
+    test('With date of birth \'29/02/2016\' in leap year 2016', () => {
+        assertIdentificationNumber(new Date(2016, 1, 29), 352, FEMALE, "352", "30", "16.02.29-352.30");
+    });
+
+    test('With date of birth \'17/09/2000\' in the year 2000', () => {
+        assertIdentificationNumber(new Date(2000, 8, 17), 59, MALE, "059", "08", "00.09.17-059.08");
+    });
+
+    test('With date of birth \'06/02/1975\' before the year 2000', () => {
+        assertIdentificationNumber(new Date(1975, 1, 6), 22, FEMALE, "022", "29", "75.02.06-022.29");
+    });
+
+    test('With date of birth \'23/10/2004\' after the year 2000', () => {
+        assertIdentificationNumber(new Date(2004, 9, 23), 5, MALE, "005", "70", "04.10.23-005.70");
+    });
+
+    var assertIdentificationNumber = function (dateOfBirth, serialNumber, expectedGender, expectedSerialNumberString, expectedControlNumberString, expectedIdentificationNumberString) {
+        const identifiationNumber = new IdentifiationNumber(dateOfBirth, serialNumber);
+        expect(identifiationNumber.serialNumber).toBe(serialNumber);
+        expect(identifiationNumber.dateOfBirth.getFullYear()).toBe(dateOfBirth.getFullYear());
+        expect(identifiationNumber.dateOfBirth.getMonth()).toBe(dateOfBirth.getMonth());
+        expect(identifiationNumber.dateOfBirth.getDate()).toBe(dateOfBirth.getDate());
+        expect(identifiationNumber.gender).toBe(expectedGender);
+        expect(identifiationNumber.serialNumberString()).toBe(expectedSerialNumberString);
+        expect(identifiationNumber.controlNumberString()).toBe(expectedControlNumberString);
+        expect(identifiationNumber.toString()).toBe(expectedIdentificationNumberString);
+        expect(identifiationNumber).toStrictEqual(identifiationNumber.clone());
+    }
 
 });
 
