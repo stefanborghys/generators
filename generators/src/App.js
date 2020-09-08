@@ -1,15 +1,9 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import IdentificationNumberOverview from "./components/identificationNumber/identificationNumberOverview";
 
 function App() {
-    return (<div className="App">
-        <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo"/>
-            <IdentificationNumberOverview/>
-        </header>
-    </div>);
+    return (<IdentificationNumberOverview/>);
 }
 
 export default App;

@@ -1,6 +1,6 @@
 import React from "react";
 import IdentificationNumberGenerator from "./identificationNumberGenerator";
-import IdentificationNumberCalculator from "./identificationNumberCalculator";
+import AntdIdentificationNumberCalculator from "./antdIdentificationNumberCalculator";
 import IdentificationNumberLabel from "./identificationNumberLabel";
 import CopyToClipboard from "../clipboard/copyToClipboard";
 import IdentifiationNumber from "../../model/identificationNumber/identifiationNumber";
@@ -22,8 +22,8 @@ class IdentificationNumberOverview extends React.Component {
     render() {
         const identificationNumber = this.state.identificationNumber;
         return (<div>
-            <IdentificationNumberCalculator identificationNumber={identificationNumber}
-                                            onChange={this.handleIdentificationNumberChange}/>
+            <AntdIdentificationNumberCalculator identificationNumber={identificationNumber}
+                                                onChange={this.handleIdentificationNumberChange}/>
             <IdentificationNumberGenerator onChange={this.handleIdentificationNumberChange}/>
             <IdentificationNumberLabel identificationNumber={identificationNumber}/>
             <CopyToClipboard value={identificationNumber.toString()}/>
@@ -33,3 +33,6 @@ class IdentificationNumberOverview extends React.Component {
 }
 
 export default IdentificationNumberOverview;
+
+// <IdentificationNumberCalculator identificationNumber={identificationNumber}
+//                                            onChange={this.handleIdentificationNumberChange}/>

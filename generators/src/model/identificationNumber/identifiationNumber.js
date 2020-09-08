@@ -6,8 +6,11 @@ import _ from 'lodash';
  * Represents the Belgian Identification Number.
  * 'Rijksregisternummer' in Dutch or 'Numéro de registre National' in French.
  *
- * Src NL: https://nl.wikipedia.org/wiki/Rijksregisternummer
- * Src FR: https://fr.wikipedia.org/wiki/Num%C3%A9ro_de_registre_national
+ * Src - Wikipedia - NL: https://nl.wikipedia.org/wiki/Rijksregisternummer
+ * Src - Wikipedia - FR: https://fr.wikipedia.org/wiki/Num%C3%A9ro_de_registre_national
+ *
+ * Src - Federale Overheidsdienst Binnenlandse Zaken - NL: https://www.ibz.rrn.fgov.be/nl/rijksregister/faq/meer-technische-informatie-it-autogeneratie-wijzigingen/
+ * Src - Service public fédéral Intérieur - FR: https://www.ibz.rrn.fgov.be/fr/registre-national/faq/questions-plus-techniques-ti-auto-generation-modifications/
  */
 class IdentifiationNumber {
 
