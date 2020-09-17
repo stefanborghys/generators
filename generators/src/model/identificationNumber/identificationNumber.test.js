@@ -1,6 +1,5 @@
 import IdentifiationNumber from "./identifiationNumber";
 import {MALE, FEMALE} from "../person/gender";
-import _ from 'lodash';
 import moment from 'moment';
 
 describe('Constructor', () => {
@@ -134,6 +133,49 @@ describe('Validate date of birth', () => {
             IdentifiationNumber.validDateOfBirth('a')
         }).toThrow('Date of birth \'a\' should of type \'Date\'.');
     });
-})
+});
+
+describe('IdentificationNumber seal', () => {
+
+    test('Define properties, throws error', () => {
+
+        expect(() => {
+            const identifiationNumber = new IdentifiationNumber();
+            Object.defineProperties(identifiationNumber, {
+                testProperty: {}
+            });
+        }).toThrow('Cannot define property testProperty, object is not extensible');
+
+    });
+
+    test('Define property, throws error', () => {
+
+        expect(() => {
+            const identifiationNumber = new IdentifiationNumber();
+            Object.defineProperty(identifiationNumber, 'testProperty', {});
+        }).toThrow('Cannot define property testProperty, object is not extensible');
+
+    });
+
+    test('Set writable properties', () => {
+        const expectedDateOfBirth = new Date();
+
+        const identifiationNumber = new IdentifiationNumber();
+        identifiationNumber.serialNumber = 5;
+        identifiationNumber.dateOfBirth = expectedDateOfBirth;
+
+        expect(identifiationNumber.serialNumber).toBe(5);
+        expect(identifiationNumber.dateOfBirth).toBe(expectedDateOfBirth);
+    });
+
+    test('Is Sealed', () => {
+        const identifiationNumber = new IdentifiationNumber();
+        const isSealed = Object.isSealed(identifiationNumber);
+        expect(isSealed).toBe(true);
+        expect(isSealed).toBeTruthy();
+    });
+
+});
+
 
 

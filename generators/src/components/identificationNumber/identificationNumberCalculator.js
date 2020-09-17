@@ -50,7 +50,7 @@ class IdentificationNumberCalculator extends React.Component {
     render() {
         const identificationNumber = this.props.identificationNumber;
 
-        const dateOfBirth = identificationNumber.dateOfBirthMoment.format("YYYY-MM-DD");
+        const dateOfBirth = moment(identificationNumber.dateOfBirth).format("YYYY-MM-DD");
         const maxDateOfBirth = this.state.maxDateOfBirthMoment.format("YYYY-MM-DD");
 
         const gender = identificationNumber.gender;

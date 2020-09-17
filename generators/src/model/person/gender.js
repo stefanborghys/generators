@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import {isString, isNil} from 'lodash';
 
 class Gender {
 
@@ -11,9 +11,9 @@ class Gender {
     }
 
     static validGender(gender) {
-        if (_.isNil(gender)) {
+        if (isNil(gender)) {
             throw new Error("Gender cannot be 'null' or 'undefined'.");
-        } else if (!_.isString(gender)) {
+        } else if (!isString(gender)) {
             throw new Error("Gender '" + gender + "' should of type 'String'.");
         } else if (gender !== MALE && gender !== FEMALE) {
             throw new Error("Gender '" + gender + "' should be one of '" + [MALE, FEMALE] + "'.");

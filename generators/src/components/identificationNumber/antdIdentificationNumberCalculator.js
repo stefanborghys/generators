@@ -1,11 +1,11 @@
 import React from "react";
 import moment from 'moment';
-import {FEMALE, Gender, MALE} from "../../model/person/gender";
+import {FEMALE, MALE} from "../../model/person/gender";
 import SerialNumberConfiguration from "../../model/identificationNumber/serialNumberConfiguration";
 import PropTypes from "prop-types";
 import {DatePicker, Form, InputNumber, Radio} from 'antd';
 import 'antd/dist/antd.css';
-import _ from 'lodash';
+import {isNil, isFinite} from 'lodash';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -22,8 +22,9 @@ class AntdIdentificationNumberCalculator extends React.Component {
         this.handleSerialNumber = this.handleSerialNumber.bind(this);
     }
 
-    handleDateOfBirth(momentOfBirth) {
-        if (!_.isNil(momentOfBirth)) {
+    handleDateOfBirth(momentOfBirth)
+    {
+        if (!isNil(momentOfBirth)) {
             const identificationNumber = this.props.identificationNumber.clone();
             identificationNumber.dateOfBirth = momentOfBirth.toDate();
 
@@ -43,7 +44,7 @@ class AntdIdentificationNumberCalculator extends React.Component {
     }
 
     handleSerialNumber(serialNumber) {
-        if (_.isFinite(serialNumber)) {
+        if (isFinite(serialNumber)) {
             const identificationNumber = this.props.identificationNumber.clone();
             identificationNumber.serialNumber = serialNumber;
 
@@ -57,20 +58,24 @@ class AntdIdentificationNumberCalculator extends React.Component {
 
     render() {
         const identificationNumber = this.props.identificationNumber;
-        const serialNumberConfiguration = SerialNumberConfiguration.ofGender(identificationNumber.gender);
+        const serialNumberConfiguration = identificationNumber.serialNumberConfiguration;
         const fields = [{
             name: ['dateOfBirth'],
-            value: identificationNumber.dateOfBirthMoment,
+            value: moment(identificationNumber.dateOfBirth),
         }, {
             name: ['gender'],
-            value: Gender.isMale(identificationNumber.gender) ? MALE : FEMALE,
+            value: identificationNumber.gender,
         }, {
             name: ['serialNumber'],
             value: identificationNumber.serialNumber
         }];
 
         return (<Form name="identificationNumberCalculatorForm"
+                      colon={false}
                       layout='horizontal'
+                      labelAlign={'left'}
+                      labelCol={{span: 2}}
+                      wrapperCol={{span: 5}}
                       fields={fields}
                       size='small'>
             <legend>Identification Number</legend>

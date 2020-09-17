@@ -1,6 +1,7 @@
 import moment from 'moment';
 import {MALE, FEMALE} from "../person/gender";
-import _ from 'lodash';
+import {isNil, isDate, isNumber, inRange, padStart} from 'lodash';
+import SerialNumberConfiguration from "./serialNumberConfiguration";
 
 /**
  * Represents the Belgian Identification Number.
@@ -9,21 +10,29 @@ import _ from 'lodash';
  * Src - Wikipedia - NL: https://nl.wikipedia.org/wiki/Rijksregisternummer
  * Src - Wikipedia - FR: https://fr.wikipedia.org/wiki/Num%C3%A9ro_de_registre_national
  *
- * Src - Federale Overheidsdienst Binnenlandse Zaken - NL: https://www.ibz.rrn.fgov.be/nl/rijksregister/faq/meer-technische-informatie-it-autogeneratie-wijzigingen/
- * Src - Service public fédéral Intérieur - FR: https://www.ibz.rrn.fgov.be/fr/registre-national/faq/questions-plus-techniques-ti-auto-generation-modifications/
+ * Src - Federale Overheidsdienst Binnenlandse Zaken - NL:
+ * https://www.ibz.rrn.fgov.be/nl/rijksregister/faq/meer-technische-informatie-it-autogeneratie-wijzigingen/ Src - Service public fédéral Intérieur -
+ * FR: https://www.ibz.rrn.fgov.be/fr/registre-national/faq/questions-plus-techniques-ti-auto-generation-modifications/
  */
 class IdentifiationNumber {
+    #dateOfBirthMoment
 
     /**
-     * Creates a new identification number.
+     * Creates a new (sealed) identification number.
      *
      * @param dateOfBirth date of birth or today by default
      * @param serialNumber serial number or 1 by default
      */
     constructor(dateOfBirth = new Date(), serialNumber = 1) {
         this._dateOfBirth = IdentifiationNumber.validDateOfBirth(dateOfBirth);
-        this._dateOfBirthMoment = moment(dateOfBirth);
+        this.#dateOfBirthMoment = moment(dateOfBirth);
         this._serialNumber = IdentifiationNumber.validSerialNumber(serialNumber);
+
+        /**
+         * Prevent new properties from being added.
+         * Only allow property values to be changed when writable!
+         */
+        Object.seal(this);
     }
 
     /**
@@ -40,15 +49,7 @@ class IdentifiationNumber {
      */
     set dateOfBirth(dateOfBirth) {
         this._dateOfBirth = IdentifiationNumber.validDateOfBirth(dateOfBirth);
-        this._dateOfBirthMoment = moment(dateOfBirth);
-    }
-
-    /**
-     * Get the date of birth as a Moment.
-     * @returns {moment.Moment} date of birth
-     */
-    get dateOfBirthMoment() {
-        return this._dateOfBirthMoment;
+        this.#dateOfBirthMoment = moment(dateOfBirth);
     }
 
     /**
@@ -71,10 +72,14 @@ class IdentifiationNumber {
         return this._serialNumber % 2 === 0 ? FEMALE : MALE;
     }
 
+    get serialNumberConfiguration() {
+        return SerialNumberConfiguration.ofGender(this.gender);
+    }
+
     static validDateOfBirth(dateOfBirth) {
-        if (_.isNil(dateOfBirth)) {
+        if (isNil(dateOfBirth)) {
             throw new Error("The date of birth cannot be 'null' or 'undefined'.");
-        } else if (!_.isDate(dateOfBirth)) {
+        } else if (!isDate(dateOfBirth)) {
             throw new Error("Date of birth '" + dateOfBirth + "' should of type 'Date'.");
         } else if (dateOfBirth > Date.now()) {
             throw new Error("Date of birth '" + dateOfBirth + "' cannot be in the future.");
@@ -84,11 +89,11 @@ class IdentifiationNumber {
     }
 
     static validSerialNumber(serialNumber) {
-        if (_.isNil(serialNumber)) {
+        if (isNil(serialNumber)) {
             throw new Error("The serial number cannot be 'null' or 'undefined'.");
-        } else if (!_.isNumber(serialNumber)) {
+        } else if (!isNumber(serialNumber)) {
             throw new Error("Serial number '" + serialNumber + "' should of type 'Number'.");
-        } else if (!_.inRange(serialNumber, 1, 999)) {
+        } else if (!inRange(serialNumber, 1, 999)) {
             throw new Error("Serial number '" + serialNumber + "' should be between 1 and 998 (incl).");
         } else {
             return serialNumber;
@@ -103,7 +108,7 @@ class IdentifiationNumber {
      * @returns {String} serial number consisting of three digits
      */
     serialNumberString() {
-        return _.padStart(this._serialNumber, 3, '0');
+        return padStart(this._serialNumber, 3, '0');
     }
 
     /**
@@ -112,16 +117,16 @@ class IdentifiationNumber {
      */
     controlNumberString() {
         // Control number calculation requires the base number to be prefixed by '2', when the Date of Birth is after the year 2000
-        const controlBasePrefix = this._dateOfBirthMoment.isAfter("1999-12-31T23:59:59Z", 'day') ? "2" : "";
-        const controlBaseNumber = controlBasePrefix.concat(this._dateOfBirthMoment.format("YYMMDD")).concat(this.serialNumberString());
+        const controlBasePrefix = this.#dateOfBirthMoment.isAfter("1999-12-31T23:59:59Z", 'day') ? "2" : "";
+        const controlBaseNumber = controlBasePrefix.concat(this.#dateOfBirthMoment.format("YYMMDD")).concat(this.serialNumberString());
         const controlBaseDevision = controlBaseNumber % 97;
         const controlNumber = 97 - controlBaseDevision;
 
-        return _.padStart(controlNumber, 2, '0');
+        return padStart(controlNumber, 2, '0');
     }
 
     toString() {
-        return this._dateOfBirthMoment.format("YY.MM.DD") + "-" + this.serialNumberString() + "." + this.controlNumberString();
+        return this.#dateOfBirthMoment.format("YY.MM.DD") + "-" + this.serialNumberString() + "." + this.controlNumberString();
     }
 
     /**

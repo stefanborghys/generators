@@ -21,6 +21,10 @@ class SerialNumberConfiguration {
 
 }
 
+SerialNumberConfiguration.prototype.toString = function toString() {
+    return "SerialNumberConfiguration minimum: " + this._minimum + ", maximum: " + this._maximum;
+};
+
 const MALE_CONFIGURATION = new SerialNumberConfiguration(1, 997);
 const FEMALE_CONFIGURATION = new SerialNumberConfiguration(2, 998);
 
