@@ -1,6 +1,6 @@
 import moment from 'moment';
-import {MALE, FEMALE} from "../person/gender";
-import {isNil, isDate, isNumber, inRange, padStart} from 'lodash';
+import {FEMALE, MALE} from "../person/gender";
+import {inRange, isDate, isNil, isNumber, padStart} from 'lodash';
 import SerialNumberConfiguration from "./serialNumberConfiguration";
 
 /**
@@ -100,6 +100,10 @@ class IdentifiationNumber {
         }
     }
 
+    dateOfBirthString() {
+        return this.#dateOfBirthMoment.format("YY.MM.DD");
+    }
+
     /**
      * The serial number represents the second group of the identification number.
      * Formatted, it's required the number always contains three digits.
@@ -126,7 +130,7 @@ class IdentifiationNumber {
     }
 
     toString() {
-        return this.#dateOfBirthMoment.format("YY.MM.DD") + "-" + this.serialNumberString() + "." + this.controlNumberString();
+        return this.dateOfBirthString() + "-" + this.serialNumberString() + "." + this.controlNumberString();
     }
 
     /**

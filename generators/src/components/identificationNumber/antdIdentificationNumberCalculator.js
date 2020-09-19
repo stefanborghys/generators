@@ -5,7 +5,9 @@ import SerialNumberConfiguration from "../../model/identificationNumber/serialNu
 import PropTypes from "prop-types";
 import {DatePicker, Form, InputNumber, Radio} from 'antd';
 import 'antd/dist/antd.css';
-import {isNil, isFinite} from 'lodash';
+import {isFinite, isNil} from 'lodash';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faFemale, faMale} from '@fortawesome/free-solid-svg-icons';
 
 const dateFormat = 'DD/MM/YYYY';
 
@@ -22,8 +24,7 @@ class AntdIdentificationNumberCalculator extends React.Component {
         this.handleSerialNumber = this.handleSerialNumber.bind(this);
     }
 
-    handleDateOfBirth(momentOfBirth)
-    {
+    handleDateOfBirth(momentOfBirth) {
         if (!isNil(momentOfBirth)) {
             const identificationNumber = this.props.identificationNumber.clone();
             identificationNumber.dateOfBirth = momentOfBirth.toDate();
@@ -74,11 +75,10 @@ class AntdIdentificationNumberCalculator extends React.Component {
                       colon={false}
                       layout='horizontal'
                       labelAlign={'left'}
-                      labelCol={{span: 2}}
-                      wrapperCol={{span: 5}}
+                      labelCol={{span: 12}}
+                      wrapperCol={{span: 12}}
                       fields={fields}
                       size='small'>
-            <legend>Identification Number</legend>
             <Form.Item label="Date of Birth" name="dateOfBirth"
                        rules={[{
                            required: true,
@@ -96,8 +96,8 @@ class AntdIdentificationNumberCalculator extends React.Component {
                            message: 'Please determine the gender!'
                        }]}>
                 <Radio.Group onChange={this.handleGender} buttonStyle="solid">
-                    <Radio.Button value={MALE}>male</Radio.Button>
-                    <Radio.Button value={FEMALE}>female</Radio.Button>
+                    <Radio.Button value={MALE}>Male <FontAwesomeIcon icon={faMale}/></Radio.Button>
+                    <Radio.Button value={FEMALE}>Female <FontAwesomeIcon icon={faFemale}/></Radio.Button>
                 </Radio.Group>
             </Form.Item>
             <Form.Item label="Serial number" name="serialNumber"
