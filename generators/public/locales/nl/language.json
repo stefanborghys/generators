@@ -1,0 +1,11 @@
+{
+  "language" : "Language",
+  "nl" : {
+    "nativeName" : "Nederlands",
+    "name" : "Dutch"
+  },
+  "en" : {
+    "nativeName" : "English",
+    "name" : "English"
+  }
+}

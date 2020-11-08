@@ -1,4 +1,4 @@
-import {isString, isNil} from 'lodash';
+import {isNil, isString} from 'lodash';
 
 class Gender {
 

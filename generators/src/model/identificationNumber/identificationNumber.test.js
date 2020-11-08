@@ -1,5 +1,5 @@
 import IdentifiationNumber from "./identifiationNumber";
-import {MALE, FEMALE} from "../person/gender";
+import {FEMALE, MALE} from "../person/gender";
 import moment from 'moment';
 
 describe('Constructor', () => {

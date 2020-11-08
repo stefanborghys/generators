@@ -1,0 +1,20 @@
+{
+  "identification-number" : {
+    "name" : "Identificatienummer",
+    "date-of-birth" : {
+      "name" : "Geboortedatum",
+      "validation" : {
+        "required" : "De geboortedatum is verplicht!"
+      }
+    },
+    "serial-number" : {
+      "name" : "Controlenummer",
+      "validation" : {
+        "required" : "Een controlenummer is verplicht!"
+      }
+    },
+    "generate" : {
+      "name" : "Genereer"
+    }
+  }
+}

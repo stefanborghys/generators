@@ -1,0 +1,10 @@
+{
+  "name" : "Gender",
+  "options" : {
+    "MALE" : "Male",
+    "FEMALE" : "Female"
+  },
+  "validation" : {
+    "required" : "The gender is mandatory!"
+  }
+}

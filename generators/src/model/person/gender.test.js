@@ -1,4 +1,4 @@
-import {Gender, MALE, FEMALE} from './gender';
+import {FEMALE, Gender, MALE} from './gender';
 
 describe('Gender', () => {
 

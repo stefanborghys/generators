@@ -1,0 +1,20 @@
+{
+  "identification-number" : {
+    "name" : "Identification number",
+    "date-of-birth" : {
+      "name" : "Date of birth",
+      "validation" : {
+        "required" : "A date of birth is required!"
+      }
+    },
+    "serial-number" : {
+      "name" : "Serial number",
+      "validation" : {
+        "required" : "A control number is required!"
+      }
+    },
+    "generate" : {
+      "name" : "Generate"
+    }
+  }
+}

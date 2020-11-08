@@ -1,0 +1,10 @@
+{
+  "name" : "Geslacht",
+  "options" : {
+    "MALE" : "Man",
+    "FEMALE" : "Vrouw"
+  },
+  "validation" : {
+    "required" : "Het geslacht is verplicht!"
+  }
+}

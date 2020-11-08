@@ -1,5 +1,5 @@
 import SerialNumberConfiguration from './serialNumberConfiguration';
-import {MALE, FEMALE} from "../person/gender";
+import {FEMALE, MALE} from "../person/gender";
 
 describe('Serial number configuration of gender', () => {
 
