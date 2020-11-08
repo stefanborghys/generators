@@ -60,8 +60,7 @@ class IdentificationNumberCalculator extends React.Component {
     }
 
     render() {
-        const t = this.props.t;
-        const identificationNumber = this.props.identificationNumber;
+        const {t, identificationNumber} = this.props;
         const serialNumberConfiguration = identificationNumber.serialNumberConfiguration;
         const fields = [{
             name: ['dateOfBirth'],
